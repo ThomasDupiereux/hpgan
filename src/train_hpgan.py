@@ -78,7 +78,7 @@ def main(args):
     if args.data_normalization_file is not None:
         data_preprocessing = DataPreprocessing(args.data_normalization_file,
                                                normalization_mode=NormalizationMode.MeanAndStd2)
-	logging.info("Loading data...")
+    logging.info("Loading data...")
     if dataset == 'nturgbd':
         train_data_reader = SequenceBodyReader(args.train_file, 
                                                sequence_length,
@@ -97,7 +97,7 @@ def main(args):
         raise ValueError("Invalid dataset value.")
 
     # setting up the model
-	logging.info("Setting up the model...")
+    logging.info("Setting up the model...")
     minibatch_size = 16
     lr_init = 5e-5
 
@@ -110,7 +110,7 @@ def main(args):
     g_z = tf.placeholder(dtype=tf.float32, shape=[None, z_size], name="g_z")
 
     # Defining the model.
-	logging.info("Defining the model...")
+    logging.info("Defining the model...")
     d_real = NNDiscriminator(d_inputs, inputs_depth, sequence_length)
     
     g      = SequenceToSequenceGenerator(g_inputs,
@@ -167,7 +167,7 @@ def main(args):
     tf.summary.scalar("discriminator_loss", d_loss_prob)
 
     # Optimizers
-	logging.info("Optimizers...")
+    logging.info("Optimizers...")
     d_op = tf.train.AdamOptimizer(learning_rate=d_lr).minimize(d_loss, var_list=d_real.parameters)
     g_op = tf.train.AdamOptimizer(learning_rate=g_lr).minimize(g_loss, var_list=g.parameters)
     d_op_prob = tf.train.AdamOptimizer(learning_rate=d_lr/2.0).minimize(d_loss_prob, var_list=d_real_prob.parameters)
@@ -180,7 +180,7 @@ def main(args):
     init_op = tf.global_variables_initializer()
 
     # Draws all z random vectors used in visualization
-	logging.info("Drawing z vectors values...")
+    logging.info("Drawing z vectors values...")
     z_rand_type = 'uniform'
     z_rand_params = {'low':-0.1, 'high':0.1, 'mean':0.0, 'std':0.2}
     z_data_p = []
